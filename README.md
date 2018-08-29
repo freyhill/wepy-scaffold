@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# saas教练端小程序
+
 #### use
 ###### 克隆
 ```
@@ -77,4 +76,3 @@ wepy build --watch
 =======
 # wepy-demo
 wepy项目实战
->>>>>>> 743801e7ea100c4ca2d41f5fa67a1606c9b81464
