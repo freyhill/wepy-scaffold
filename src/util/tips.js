@@ -62,36 +62,7 @@ export default class Tips {
       });
     });
   }
-  static toast(title, onHide, icon = 'success') {
-    wx.showToast({
-      title: title,
-      icon: icon,
-      mask: true,
-      duration: 500
-    });
-    // 隐藏结束回调
-    if(onHide) {
-      setTimeout(() => {
-        onHide();
-      }, 500);
-    }
-  }
-  /**
-   * 警告框
-   */
-  static alert(title) {
-    wx.showToast({
-      title: title,
-      image: '/images/icons/alert.png',
-      mask: true,
-      duration: 500
-    });
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, 500);
-    });
-  }
+
   /**
    * 错误框
    */

@@ -2,7 +2,7 @@ const path = require('path');
 var prod = process.env.NODE_ENV === 'production';
 module.exports = {
   wpyExt: '.wpy',
-  eslint: false,
+  eslint: true,
   cliLogs: !prod,
   build: {
     web: {
@@ -20,12 +20,12 @@ module.exports = {
     modules: ['node_modules']
   },
   compilers: {
-    less: {
+    /*less: {
       compress: prod
-    },
-    /*sass: {
-      outputStyle: 'compressed'
     },*/
+     sass: {
+      outputStyle: 'compressed'
+    },
     babel: {
       sourceMap: true,
       presets: ['env'],

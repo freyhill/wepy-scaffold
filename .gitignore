@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 node_modules
 dist
 .DS_Store
-=======
-=======
->>>>>>> 084838ddb51b6a3510ff4753cf27b1693a604a2f
 # Logs
 logs
 *.log
@@ -67,7 +63,3 @@ typings/
 
 # next.js build output
 .next
-<<<<<<< HEAD
->>>>>>> 743801e7ea100c4ca2d41f5fa67a1606c9b81464
-=======
->>>>>>> 084838ddb51b6a3510ff4753cf27b1693a604a2f
