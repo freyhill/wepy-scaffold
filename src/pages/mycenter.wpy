@@ -1,0 +1,106 @@
+<style lang="scss">
+@import "../styles/style";
+.headpic{
+  padding:35px 0 10px 0;
+  image{
+   width: 170rpx;
+   height: 170rpx;
+   border:1rpx solid #999;
+   display: block;
+   margin:auto;
+   border-radius: 170rpx;
+
+ }
+}
+.name{
+  color:#2D2E38;
+  padding-bottom: 52rpx;
+}
+.info{
+  padding:20rpx 0;
+}
+</style>
+
+<template lang="wxml">
+  <Panel>
+    <view class="title" slot="title"></view>
+    <view class="title" slot="content">
+      <view class="headpic bgc_fff"><image  src="{{mycenterdata.data.head_pic}}" /></view>
+      <view class="name font32 bgc_fff textcenter">{{mycenterdata.data.nick_name}}{{ mycenterdata.data.job_num}}</view>
+    </view>
+  </Panel>
+  <Panel >
+    <view class="title" slot="title"></view>
+    <view class="title" slot="content">
+        <view class="info weui-flex bgc_fff">
+          <repeat for="{{mycenterdata.data.info}}" index="index" item="item" key="key">
+            <view class="weui-flex__item ">
+              <view class="font32 c_030303 textcenter">{{item.content}}</view>
+              <view class="font24 c_C3C9D0 textcenter">{{item.title}}</view>
+            </view>
+          </repeat>
+
+        </view>
+    </view>
+  </Panel>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { connect,getStore } from 'wepy-redux'
+  import { getMycenterData} from '../store/actions/mycenterAction.js'
+  import  Panel  from '../components/panel'
+
+  let store=getStore();
+
+  @connect({
+     mycenterdata(state){
+       return state.mycenterReducer.mycenterdata
+     },
+  })
+
+  export default class Mycenter extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的'
+    }
+    components = {
+      Panel:Panel,
+    }
+
+    data = {
+      loadingdata:"正在加载数据..."
+    }
+
+    computed = {
+    }
+
+    watch={
+      mycenterdata(newdata,olddata){
+
+        if(newdata !== olddata){
+          this.loadingdata="啊哦，没有找到该学员~";
+          this.$apply();
+        }
+      }
+    }
+
+    methods = {
+
+    }
+
+    /*
+     * 获取和点击请求的数据
+     */
+    async getData(){
+
+      let data = {
+      }
+      await getMycenterData(store,"coach/personal_center",data,true);
+      this.$apply();
+    }
+
+    async onLoad() {
+      await this.getData();
+    }
+  }
+</script>

@@ -1,0 +1,113 @@
+<style lang="scss">
+/** less **/
+
+</style>
+
+<template lang="wxml">
+    <Panel>
+      <view class="title" slot="title"></view>
+      <view class="title" slot="content">
+        <TabSlider :tablist.sync="tablist" :title.sync="" @childFn.user="parentFn"></TabSlider>
+      </view>
+    </Panel>
+    <Panel>
+      <view class="title" slot="title"></view>
+      <view class="title" slot="content">
+        <ExamList :examlist.sync="examlist" :title.sync="" @childFn.user="parentFn"></ExamList>
+      </view>
+    </Panel>
+</template>
+
+
+<script>
+  import wepy from 'wepy'
+  import { connect,getStore } from 'wepy-redux'
+  import { getExamData ,setExamAction} from '../store/actions/examAction.js'
+  import Panel  from '../components/panel'
+  import TabSlider from '../components/tab-slider'
+  import ExamList from '../components/exam-list'
+  import auth from '../util/auth';
+  let store=getStore();
+  setTimeout(function(){
+
+    console.log(store.getState());
+  },3000)
+
+
+  @connect({
+     examinitdata(state){
+       return state.examReducer.examinitdata
+     },
+  },{
+    getExamData,
+    setExamAction
+  })
+
+  export default class Exam extends wepy.page {
+    config = {
+      navigationBarTitleText: '考试'
+    }
+    components = {
+      Panel:Panel,
+      TabSlider:TabSlider,
+      ExamList:ExamList
+    }
+
+    data = {
+      tablist:{},
+      examlist:{},
+      pdata:111,
+      parentTitle: 'p-title',
+      isfirst:0
+    }
+
+    computed = {
+
+    }
+
+    methods = {
+      isChange(){
+        this.parentTitle="no data";
+      },
+      async parentFn (id, evt) {
+        console.log('parent received emit event, number is: ' + id)
+         this.getData(id);
+      }
+    }
+    watch = {
+
+    }
+    /*
+     * 获取和点击请求的数据
+     */
+    async getData(id){
+
+      let data = {
+        tab:id?id:1
+      }
+
+      let res =  await getExamData(store,"coach/exam",data,true);
+
+      this.tablist= res.data.tab;
+      this.examlist = res.data.content;
+      this.$apply();
+    }
+    async onShow(){
+      if(this.isfirst === 0){
+         this.getData();
+      }
+    }
+    onHide(){
+      this.isfirst = 0;
+    }
+    async onLoad() {
+      try{
+        this.isfirst = 1;
+        await auth.login();
+        await this.getData();
+      }catch(error){
+        console.log(error.msg);
+      }
+    }
+  }
+</script>

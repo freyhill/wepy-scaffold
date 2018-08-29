@@ -1,0 +1,14 @@
+<style lang="less">
+
+</style>
+<template>
+  <view class="panel">
+    <slot name="title"></slot>
+    <slot name="content"></slot>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  export default class Panel extends wepy.component {
+  }
+</script>

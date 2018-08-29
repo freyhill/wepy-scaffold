@@ -1,0 +1,87 @@
+<style lang="scss">
+@import "../styles/weui";
+page{
+  background: #F7F7FA;
+}
+.swiper-item{
+  width:20%;
+}
+.item{
+  width: 300rpx;
+  display: inline-block;
+width: 100%;
+height: 300rpx;
+}
+.page-section-spacing{
+  background: #fff;
+}
+.scroll-view_H{
+  white-space: nowrap;
+}
+.scroll-view-item{
+  height: 300rpx;
+}
+.scroll-view-item_H{
+  display: inline-block;
+  text-align:center;
+  line-height:80rpx;
+  width: 200rpx;
+  height: 80rpx;
+  color:#9EABB9;
+  font-size: 32rpx;
+  font-weight: 200;
+}
+.current{
+  color:#2DCC71;
+}
+</style>
+<template>
+  <view >
+    <view class="page-section-spacing">
+      <scroll-view scroll-into-view="{{toView}}" scroll-with-animation="false" class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
+        <repeat for="{{tablist}}" item="item" index="index">
+          <view class="item scroll-view-item_H {{item.current ? 'current':'' }} " @tap="tap({{item.id}})">{{item.name ? item.name :item.title}}({{item.num}})</view>
+        </repeat>
+      </scroll-view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import { connect,getStore } from 'wepy-redux'
+  @connect({
+    examinitdata(state){
+      return state.examReducer.examinitdata
+    }
+  })
+  export default class TabSlider extends wepy.component {
+      props = {
+        title:String,
+        tablist:Object
+
+      }
+      data = {
+        order :['red', 'yellow', 'blue', 'green', 'red'],
+        toView:"red"
+      }
+      watch = {
+        tablist(n,o){
+        }
+      }
+      methods = {
+        tap(id){
+
+            for (var i = 0; i < this.order.length; ++i) {
+              if (this.order[i] === this.toView) {
+                  this.toView = this.order[i + 1]
+                break
+              }
+            }
+            this.$emit('childFn', id)
+        }
+      }
+      onLoad () {
+        this.$apply();
+      }
+  }
+</script>

@@ -1,0 +1,52 @@
+<style lang="scss">
+@import "../styles/style";
+
+</style>
+<template>
+    <view class="exam-list">
+      <view wx:if="{{studentdata.data.content.length>0}}">
+        <repeat for="{{studentdata.data.content}}" index="index" item="item" key="key">
+          <StuItem :item="item"></StuItem>
+        </repeat>
+      </view>
+
+    </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import { connect,getStore } from 'wepy-redux'
+  import StuItem from './stu-item'
+  @connect({
+     studentdata(state){
+       console.log(state.studentReducer.studentdata);
+       return state.studentReducer.studentdata
+     },
+     obtainstudent(state){
+       return state.obtainStuReducer.obtainstudent
+     }
+  })
+  export default class StudentList extends wepy.component {
+    data = {
+      loadingdata:"啊哦，没有找到该学员~"
+    }
+    components = {
+      StuItem:StuItem,
+    }
+    watch={
+      studentdata(x,y){
+        if(x!==y){
+          this.loadingdata="啊哦，没有找到该学员~";
+          this.$apply();
+        }
+        console.log("xxxxx",x,"yyyyyy",y);
+      }
+    }
+    methods = {
+      tap (sign_id) {
+        this.$emit('childFn', sign_id)
+      }
+    }
+    onLoad () {
+    }
+  }
+</script>

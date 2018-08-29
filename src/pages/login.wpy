@@ -1,0 +1,163 @@
+<style lang="scss">
+ @import "../styles/style";
+ page{
+   background-color: #fff;
+ }
+.login_logo{
+  padding:100rpx 0;
+  image{
+    display: block;
+    width: 256rpx;
+    height: 96rpx;
+    margin:auto;
+  }
+}
+.inputsec{
+  width: 570rpx;
+  margin:auto;
+  input{
+    color:#C3C9D0;
+    padding:20rpx 0;
+    border-bottom:1rpx solid #E7ECF2;
+  }
+  .confirm-btn{
+    width: 346rpx;
+    margin-top:70rpx;
+  }
+  .confirm-btn:after{
+    border: none;
+  }
+}
+</style>
+
+<template lang="wxml">
+  <Panel >
+    <view class="title" slot="title"></view>
+    <view class="title" slot="content">
+      <view class="login_logo">
+        <image  class="" src="../image/login_logo.png" />
+      </view>
+      <view class="inputsec">
+        <input class="font24" type="text" bindinput="getUsername" name=""  placeholder="请输入用户名" />
+        <input class="font24" password type="text" bindinput="getPassword" name="" value="" placeholder="请输入密码" />
+        <button class="confirm-btn font28 main_bg_color c_fff" type="text" name="" value="" @tap="login">登录</button>
+      </view>
+    </view>
+  </Panel>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { connect,getStore } from 'wepy-redux'
+  import { getMycenterData} from '../store/actions/mycenterAction.js'
+  import  Panel  from '../components/panel'
+  import config from '../config.js';
+  import http from '../util/http';
+  import auth from '../util/auth';
+  import util from '../util/util';
+  import tips from '../util/tips';
+
+  let store=getStore();
+
+  @connect({
+     mycenterdata(state){
+       return state.mycenterReducer.mycenterdata
+     },
+  })
+
+  export default class Mycenter extends wepy.page {
+    config = {
+      navigationBarTitleText: '登录'
+    }
+    components = {
+      Panel:Panel,
+    }
+
+    data = {
+      username:"",
+      password:""
+    }
+
+    computed = {
+    }
+
+    watch={
+
+    }
+
+    methods = {
+      //获取登录用户名
+      getUsername(e){
+          let value = e.detail.value;
+          this.username = value;
+      },
+
+      //获取登录密码
+      getPassword(e){
+          let value = e.detail.value;
+          this.password = value;
+      },
+
+      //请求登录
+      async login(){
+
+        let usename = this.username;
+        if(!util.isPhoneNum(usename)){
+          tips.modal("请输入正确的手机号码");
+          return;
+        }
+        if(!this.password){
+            tips.modal("请输入密码");
+            return;
+        }
+        let data ={
+          username:this.username,
+          password:this.password
+        }
+        wepy.showLoading();
+        //超时处理
+        Promise.race([this.timeOut(5000),await wepy.request({url:`${config.api}coach/login`, data})]).then((values)=>{
+          console.log("values",values);
+
+          wepy.hideLoading();
+          if(values.timeout){
+              tips.modal(values.message);
+          }else{
+              if(values.data.code != 0){
+
+                tips.modal(values.data.msg);
+              }else{
+
+                 auth.setConfig("session_key",values.data.data).then(()=>{
+                   wx.navigateBack({
+                     delta:1
+                   })
+                 }).catch((err) => {
+                   tips.modal(err);
+                 });
+              }
+            }
+        })
+      }
+    }
+    //请求超时设置
+    timeOut(delay){
+      return new Promise((resolve)=>{
+        setTimeout(()=>{
+          resolve({timeout:true,message:"请求超时，请重试"});
+        },delay);
+      })
+    }
+
+    /*
+     * 获取和点击请求的数据
+     */
+    async getData(){
+
+    }
+
+    async onLoad() {
+      await this.getData();
+    }
+  }
+</script>

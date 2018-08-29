@@ -1,0 +1,78 @@
+<style lang="scss">
+@import "../styles/style";
+
+</style>
+<template>
+    <view class="exam-list">
+      <view wx:if="{{examdetaildata.data.mystudent}}" class="weui-flex font28 pd20 bgc_fff mb20">
+        <view class="weui-flex__item c_4C556E">我的学员({{examdetaildata.data.mystudent.num}})</view>
+        <view wx:if="{{examdetaildata.data.mystudent.addbtn}}" class="main_color textright" @tap="addStudent">添加学员+</view>
+      </view>
+      <view wx:if="{{examdetaildata.data.mystudent.student_list.length>0}}">
+        <repeat for="{{examdetaildata.data.mystudent.student_list}}" index="index" item="item" key="key">
+          <StuItem :item="item" @btnClick.user="btnClick"></StuItem>
+        </repeat>
+      </view>
+      <view wx:else>
+        <view class="nodata font24">{{loadingdata}}</view>
+      </view>
+    </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import { connect,getStore } from 'wepy-redux';
+  import StuItem from './stu-item';
+  import http from '../util/http';
+  import Tips from '../util/tips';
+
+  @connect({
+     examdetaildata(state){
+       return state.examdetailReducer.examdetaildata
+     }
+  })
+  export default class ExamDetailList extends wepy.component {
+    data = {
+      loadingdata:"啊哦，没有找到该学员~"
+    }
+    components = {
+      StuItem:StuItem,
+    }
+    watch={
+      examdetaildata(x,y){
+        if(x!==y){
+          this.loadingdata="啊哦，没有找到该学员~";
+          this.$apply();//得加上
+        }
+        console.log("66666",x,"66666",y);
+      }
+    }
+    methods = {
+
+      addStudent(){
+        wepy.navigateTo({url: 'addexamstudent'});
+      },
+      //移除
+      btnClick(btn,id){
+        console.log(btn,id);
+        this.$emit('btnClick', btn,id);
+        // if(btn.type == 2){
+        //   http.delete(`coach/remove_student/${id}`,{},true).then(function(res){
+        //     console.log(res);
+        //     if(res.success == "true"){
+        //       Tips.success("移除成功");
+        //     }else{
+        //       Tips.success(res.msg);
+        //     }
+        //   }).catch(function(error){
+        //     Tips.error("网络错误");
+        //
+        //   })
+        // }
+
+      }
+    }
+    onLoad () {
+      this.$apply();
+    }
+  }
+</script>

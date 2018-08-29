@@ -1,0 +1,138 @@
+<style lang="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+
+import wepy from 'wepy'
+import 'wepy-async-function' //使用async&await
+import { setStore } from 'wepy-redux'
+import configStore from './store'
+
+const store = configStore();
+setStore(store)
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+
+      'pages/student',
+      'pages/preexam',
+      'pages/exam',
+      'pages/examdetail',
+      'pages/addexamstudent',
+
+      'pages/obtainstu',
+      'pages/index',
+      'pages/login',
+      'pages/mycenter',
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    },
+    'tabBar': {
+      'color': '#666666',
+      'selectedColor': '#3EC16C',
+      'borderStyle': 'white',
+      'backgroundColor': '#fff',
+      'list': [
+        {
+          'iconPath': 'image/tabicon/stu0.png',
+          'selectedIconPath': 'image/tabicon/stu1.png',
+          'pagePath': 'pages/student',
+          'text': '学员'
+        },
+        {
+          'iconPath': 'image/tabicon/exam0.png',
+          'selectedIconPath': 'image/tabicon/exam1.png',
+          'pagePath': 'pages/exam',
+          'text': '考试'
+        },
+        {
+          'iconPath': 'image/tabicon/obtstu0.png',
+          'selectedIconPath': 'image/tabicon/obtstu1.png',
+          'pagePath': 'pages/obtainstu',
+          'text': '招生'
+        },
+        {
+          'iconPath': 'image/tabicon/my0.png',
+          'selectedIconPath': 'image/tabicon/my1.png',
+          'pagePath': 'pages/mycenter',
+          'text': '我的'
+        }
+      ]
+    }
+  }
+
+  globalData = {
+    userInfo: null,
+    api: "https://saasapi.qugocar.com/public/",
+    auth: {}
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+    this.use('promisify'); //启用async&await 重要
+  }
+  a=1
+  onLaunch(parm) {
+
+
+    //测试async&await
+    this.testAsync()
+    //测试promise
+    this.sleep(2).then(function(data){
+
+    })
+
+  }
+
+   sleep (s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(`promise resolved-${s}`)
+      }, s * 1000)
+    })
+  }
+  //async&await使用
+  async testAsync () {
+    const data = await this.sleep(4)
+    console.log(data)
+  }
+  async wxRequest(data = {}, url) {
+
+      let res = await wepy.request({
+          url: url,
+          method: data.method || 'GET',
+          data: data,
+          header: { 'Content-Type': 'application/json' },
+      });
+
+
+      return res;
+  }
+  getUserInfo(cb) {
+    const that = this
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success (res) {
+        that.globalData.userInfo = res.userInfo
+        cb && cb(res.userInfo)
+      }
+    })
+  }
+}
+</script>

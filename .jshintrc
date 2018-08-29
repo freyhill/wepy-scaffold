@@ -1,0 +1,9 @@
+{
+    "esnext": true,
+    "shadow":false,
+    "eqeqeq":true,
+    "indent":true,
+    "unused": true,
+    "expr":true ,
+    "sub":true
+}

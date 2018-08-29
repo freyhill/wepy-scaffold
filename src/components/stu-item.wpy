@@ -1,0 +1,130 @@
+<style type="scss">
+@import "../styles/style";
+page{
+  font-weight: 200;
+}
+.list-item{
+  background: #fff;
+  margin-bottom:30rpx;
+  padding:20rpx 0;
+  .status{
+    background: #FFC10C;
+    padding:16rpx 30rpx;
+    border-bottom-right-radius: 40rpx;
+    border-top-right-radius: 40rpx;
+  }
+  .item-main{
+    padding:20rpx 40rpx;
+  }
+  .name{
+
+    color:#2D2E38;
+
+  }
+  .age{
+    padding-left:10rpx;
+    font-size: 26rpx;
+    color:#666666;
+  }
+
+  .info-item{
+    .icon{
+      width: 28rpx;
+      height: 28rpx;
+    }
+  }
+  .phone_num{
+    color:#2DCC71;
+    font-size: 34rpx;
+  }
+  .btn{
+
+    padding:14rpx 38rpx;
+    border-radius: 10rpx;
+    margin-top:36rpx;
+  }
+  .checkbox{
+    width: 40rpx;
+    height:40rpx;
+    border:1rpx solid #9EABB9;
+  }
+  .checked{
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAACh0lEQVRIS+2XX0hTYRjGn3O206yl25hLl7kUkohKLLuosIuWGEYSXQgWXlQk0UVFiO2mGFhQSnUVdJWUGRgIs4LuWtZGGRbEGE3N2Zwrtv6M/XFzc39OnMFkB6c72zx4s3N93uf3vs/3fN93DkHTNI01eAgGHI5HYPBaMDXvBI3V72OjoAhq6S5UiOSLIybARq8F2pnn+BPx8TK7kBDgYMl2PNh2ng1+9tuAnlkdL9CkKAkSX+vvssEDrnfodbzgFcyIm+rvF8AFq3PPWSlVgjpxFUb9k5iLhVhCvIWrZr0S3VvboBKVQvPjKYy+cf7BEqEYPdXt2F9cg1fuz7ht1yEYD2cPpggBonSM0wEqJkW4U92OBskO6L1mXLP2I4b4kvXKaHUZJcEFZRNG/d+h95gQpZeKJFUVVAk0lSdxRLobIx4zbtqH4I7OpQ1JRrBKpMDwTg080QC0tkEYfJa0QkUkhasVLWhVHIAl+BNd0/34teBeNpkZwUxls2wPrqtaISRIXLH2Ycw/xbJvHSHE2XI1LiqbYA250DH5cNlJk51wAjPAZtledFWeSKzzPcdLvHZ/Sdi+gRShQ9mIM2WH8S04ixu2QUyHXBn3ICcwo8IE7KisDt1VpxZt/+CfQJuiAZc3H4M/Po9O62OYAjOcQsgZnBwh1fY+lx7nytUIxSK4ZH0EU8CWcdKsrE5VS7VdKhTDEf6XSO9H3wRnaM7XImN7o6wWpzcdwhPnCN56zGn36kqdZG11VmOt8HIBTA+43qPXMbxajnI/uXR/P+GWfQgROsYbXEFJ8KZWy/7Ycy54EmCjdxzxNLdKvt3IhcXo3NKC4/J9bHC+wrnUJ/4kcinMt2bNwP8B7eG8topbnlsAAAAASUVORK5CYII=');
+    background-size: cover;
+  }
+}
+</style>
+<template>
+  <view class="list-item">
+   <text class="status font24">{{item.status}}</text>
+   <view class="item-main weui-flex">
+
+     <view class="info-left weui-flex__item" >
+       <view><text class="name font36">{{item.name?item.name:item.realname}}</text><text class="c_666 font24">{{item.age}}岁</text></view>
+       <view class="info mt20">
+         <block wx:for="{{item.info}}" wx:for-item="itemName" wx:key="key">
+           <view class="weui-flex info-item font24 c_8994A2  mb5">
+             <view><image class="icon" src="{{itemName.icon}}" /></view>
+             <view>{{itemName.title}}</view>
+             <view>{{itemName.content}}</view>
+           </view>
+         </block>
+       </view>
+     </view>
+     <view class="info-right">
+       <view class="main_color font24 text-underline" @tap="callPhone({{item.phone_num}})">{{item.phone_num}}</view>
+       <view wx:if="{{from ==='add'}}">
+         <text>{{item.m}}</text>
+         <view class="checkbox {{item.checked}}" @tap="checkIt({{item.sign_id}})" ></view>
+       </view>
+       <view wx:elif="{{item.btn}}" @tap="btnClick({{item.btn}},{{item.sign_id?item.sign_id:item.id}})" class="btn font24 main_bg_color c_fff">{{item.btn.title}}</view>
+     </view>
+   </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import util from '../util/util';
+
+  export default class StuItem extends wepy.component {
+    props = {
+      gitem: {},
+      from:String,
+      item:{},
+      array:[]
+    }
+    data = {
+      ids:[],
+
+    }
+    watch={
+      item(newdata,olddata){
+
+      }
+    }
+    methods = {
+      //方法测试
+      tap () {
+        this.gitem.childname = `Child Random(${Math.random()})`
+        console.log(`Clicked Group ${this.$parent.$index}. Item ${this.$index}, ID is ${this.gitem.childid}`)
+      },
+      //checkbox选择学员
+      checkIt(id){
+        this.$emit('childFn', id);
+      },
+      //点击右下角按钮，预约考试等
+      btnClick(btn,sign_id){
+        this.$emit('btnClick', btn,sign_id);
+      },
+      //拨打电话
+      callPhone(phonenum){
+        wx.makePhoneCall({
+          phoneNumber: phonenum //仅为示例，并非真实的电话号码
+        })
+      }
+    }
+    onLoad(){
+
+    }
+  }
+</script>

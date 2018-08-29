@@ -1,0 +1,135 @@
+<style lang="scss">
+/** less **/
+
+</style>
+
+<template lang="wxml">
+    <Panel >
+      <view class="title" slot="title"></view>
+      <view class="title" slot="content">
+        <ExamList :examlist.sync="examlist" :title.sync="" @addStudent.user="addStudent" isadd="true"></ExamList>
+      </view>
+    </Panel>
+</template>
+
+
+<script>
+  import wepy from 'wepy'
+  import { connect,getStore } from 'wepy-redux'
+  import { getPreExamData ,setPreExamAction} from '../store/actions/preexamAction.js'
+  import Panel  from '../components/panel'
+  import ExamList from '../components/exam-list'
+  import auth from '../util/auth';
+  import http from '../util/http';
+  import Tips from '../util/tips';
+
+  let store=getStore();
+  setTimeout(function(){
+    console.log(store.getState());
+  },3000)
+
+
+  @connect({
+     preexamdata(state){
+       return state.preexamReducer.preexamdata
+     },
+  },{
+    getPreExamData,
+    setPreExamAction
+  })
+  /**
+   * 预约考试
+   */
+  export default class PreExam extends wepy.page {
+    config = {
+      navigationBarTitleText: '预约考试'
+    }
+
+    components = {
+      Panel:Panel,
+      ExamList:ExamList
+    }
+
+    data = {
+      examlist:{},
+      isfirst:0
+    }
+
+    computed = {
+
+    }
+
+    methods = {
+      isChange(){
+        this.parentTitle="no data";
+      },
+      //添加请求
+      addStudent(id){
+
+        let data = {
+          ids:this.sign_id,
+          exam_plan_merchant_id:id
+        }
+        http.post(`coach/batch_add`,data,true).then(function(res){
+
+          if(res.success == 'true'){
+            Tips.success("预约成功",2000).then(function(){
+              wx.navigateBack({
+                delta:1
+              });
+            });
+          }else{
+            Tips.error(res.msg);
+          }
+
+
+        }).catch(function(error){
+          Tips.error(error.message);
+        })
+      },
+
+    }
+
+    watch = {
+      preexamdata(newdata,olddata){
+        console.log("newdata",newdata);
+      }
+    }
+    /*
+     * 获取和点击请求的数据
+     */
+    async getData(id){
+
+      let data = {
+        tab:id?id:2
+      }
+
+      let res =  await getPreExamData(store,"coach/exam",data,true);
+      this.examlist = res.data.content;
+      this.$apply();
+    }
+
+    async onShow(){
+      if(this.isfirst === 0){
+         this.getData();
+      }
+    }
+
+    onHide(){
+      this.isfirst = 0;
+    }
+
+    async onLoad(options) {
+
+      this.sign_id = options.sign_id;
+
+      try{
+        this.isfirst = 1;
+        await auth.login();
+        await this.getData();
+      }catch(error){
+        console.log(error.msg);
+      }
+    }
+  }
+</script>
