@@ -31,7 +31,7 @@
 
   export default class Detail extends wepy.page {
     config = {
-      navigationBarTitleText: '考试详情'
+      navigationBarTitleText: '音乐人详情'
     }
     components = {
       Panel:Panel,

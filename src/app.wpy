@@ -25,7 +25,7 @@ export default class extends wepy.app {
 
       'pages/list',
       'pages/detail',
-
+      'pages/my'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -40,15 +40,15 @@ export default class extends wepy.app {
       'backgroundColor': '#fff',
       'list': [
         {
-          'iconPath': 'image/tabicon/obtstu0.png',
-          'selectedIconPath': 'image/tabicon/obtstu1.png',
+          'iconPath': 'image/tabicon/list0.png',
+          'selectedIconPath': 'image/tabicon/list1.png',
           'pagePath': 'pages/list',
           'text': '首页'
         },
         {
           'iconPath': 'image/tabicon/my0.png',
           'selectedIconPath': 'image/tabicon/my1.png',
-          'pagePath': 'pages/detail',
+          'pagePath': 'pages/my',
           'text': '我的'
         }
 
@@ -58,7 +58,7 @@ export default class extends wepy.app {
 
   globalData = {
     userInfo: null,
-    api: "https://saasapi.qugocar.com/public/",
+    api: "",
     auth: {}
   }
 
@@ -67,10 +67,7 @@ export default class extends wepy.app {
     this.use('requestfix')
     this.use('promisify'); //启用async&await 重要
   }
-  a=1
   onLaunch(parm) {
-
-
     //测试async&await
     this.testAsync()
     //测试promise

@@ -9,7 +9,7 @@
       <view class="title" slot="title"></view>
       <view class="title" slot="content">
         <repeat for="{{listdata}}" index="index" item="item" key="key">
-          <ListItem :item="item"></ListItem>
+          <ListItem :item="item" @gotoDetail.user="gotoDetail" ></ListItem>
         </repeat>
       </view>
     </Panel>
@@ -34,7 +34,7 @@
 
   export default class List extends wepy.page {
     config = {
-      navigationBarTitleText: '考试'
+      navigationBarTitleText: '音乐人'
     }
     components = {
       ListItem:ListItem
@@ -49,7 +49,11 @@
     }
 
     methods = {
+      gotoDetail(id){
+        console.log("pid",id);
+        wepy.navigateTo({url: 'detail?id=' + id});
 
+      }
     }
     watch = {
 

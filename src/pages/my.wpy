@@ -1,0 +1,64 @@
+<style lang="scss">
+/** less **/
+
+</style>
+
+<template lang="wxml">
+
+    <Panel>
+      <view class="title" slot="title"></view>
+      <view class="title" slot="content">
+        我的
+      </view>
+    </Panel>
+</template>
+
+
+<script>
+  import wepy from 'wepy'
+  import { connect,getStore } from 'wepy-redux'
+  import Panel  from '../components/panel'
+
+  let store=getStore();
+
+
+  export default class My extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的'
+    }
+    components = {
+      Panel:Panel
+    }
+
+    data = {
+
+    }
+
+    computed = {
+
+    }
+
+    methods = {
+
+    }
+    watch = {
+
+    }
+
+    async getData(id){
+
+    }
+
+    async onShow(){
+
+    }
+
+    onHide(){
+
+    }
+
+    async onLoad() {
+
+    }
+  }
+</script>
