@@ -1,0 +1,68 @@
+<style lang="scss">
+
+.status{
+  padding:10rpx 26rpx;
+  border-radius: 10rpx;
+}
+</style>
+
+<template lang="wxml">
+    <Panel>
+
+    </Panel>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import { connect,getStore } from 'wepy-redux';
+  import { getdetailData} from '../store/actions/detailAction.js';
+  import Panel  from '../components/panel';
+  import auth from '../util/auth';
+  import http from '../util/http';
+  import Tips from '../util/tips';
+
+  let store=getStore();
+
+  @connect({
+     detaildata(state){
+       return state.detailReducer.detaildata
+     }
+  })
+
+  export default class Detail extends wepy.page {
+    config = {
+      navigationBarTitleText: '考试详情'
+    }
+    components = {
+      Panel:Panel,
+    }
+
+    data = {
+
+    }
+
+    computed = {
+
+    }
+
+    methods = {
+
+    }
+    /*
+     * 获取和点击请求的数据
+     */
+    async getData(id){
+
+
+    }
+    async onShow(options){
+
+    }
+    onHide(){
+
+    }
+    async onLoad(options) {
+
+    }
+  }
+</script>

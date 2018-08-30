@@ -10,10 +10,10 @@ export function setListAction(newData) {
  * 业务函数
  */
 export async function getListData(store, url, data, loading) { //
-
+try{
     let newData = await http.get(url, data, loading);
 
-    store.dispatch(setListAction(newData));
+    store.dispatch(setListAction(newData.data));
     return newData;
   } catch(error) {
 

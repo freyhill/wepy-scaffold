@@ -1,0 +1,84 @@
+<style lang="scss">
+@import "../styles/style";
+  .mylist:odd {
+      color: red;
+  }
+  .mylist:even {
+      color: green;
+  }
+  .subject{
+    padding:5rpx 17rpx;
+    border-radius: 10rpx;
+  }
+  .exam-list-item{
+    align-items: center;
+    padding:20rpx 40rpx;
+  }
+  .add-student-btn{
+    border-radius: 8rpx;
+    padding:10rpx 20rpx;
+  }
+
+  .headpic{
+    background: #333;
+    width: 135rpx;
+    height: 135rpx;
+  }
+  .list-item{
+    padding:30rpx 34rpx;
+    width:600rpx;
+    margin:20rpx auto;
+    box-shadow: 2rpx 2rpx 10rpx #f4f4f4;
+    border-radius: 10rpx;
+  }
+  .honor{
+    border:1rpx solid #999;
+    border-radius: 8rpx;
+    vertical-align: middle;
+  }
+</style>
+
+<template>
+  <view class="list-item bgc_fff weui-flex " @tap="gotoDetail({{item.id}})">
+    <view class="weui-flex__item">
+      <view><text class="font32">{{item.name}}</text><text class="honor font18 pd5 ml10">{{item.sex === 1?"男":"女"}}</text></view>
+      <view class="font20">{{item.age}}岁</view>
+      <view class="font20 mt10">{{item.address}}</view>
+    </view>
+    <view class="">
+      <view class="headpic"></view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class ListItem extends wepy.component {
+    props={
+
+    }
+    data = {
+
+    }
+    components = {
+
+    }
+
+    watch = {
+
+    }
+
+    methods = {
+      gotoDetail(id){
+        console.log("id",id);
+        this.$emit('gotoDetail', id); //触发父级事件
+      }
+
+    }
+
+    onLoad () {
+
+    }
+  }
+</script>

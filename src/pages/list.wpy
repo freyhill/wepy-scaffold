@@ -1,0 +1,75 @@
+<style lang="scss">
+/** less **/
+
+</style>
+
+<template lang="wxml">
+
+    <Panel>
+      <view class="title" slot="title"></view>
+      <view class="title" slot="content">
+        <repeat for="{{listdata}}" index="index" item="item" key="key">
+          <ListItem :item="item"></ListItem>
+        </repeat>
+      </view>
+    </Panel>
+</template>
+
+
+<script>
+  import wepy from 'wepy'
+  import { connect,getStore } from 'wepy-redux'
+  import { getListData } from '../store/actions/listAction.js'
+  import Panel  from '../components/panel'
+  import auth from '../util/auth';
+  import ListItem from '../components/list-item'
+  let store=getStore();
+
+  @connect({
+     listdata(state){
+       console.log(state);
+       return state.listReducer.listdata
+     },
+  })
+
+  export default class List extends wepy.page {
+    config = {
+      navigationBarTitleText: '考试'
+    }
+    components = {
+      ListItem:ListItem
+    }
+
+    data = {
+
+    }
+
+    computed = {
+
+    }
+
+    methods = {
+
+    }
+    watch = {
+
+    }
+    /*
+     * 获取和点击请求的数据
+     */
+    async getData(id){
+
+      let res =  await getListData(store,"data/wepylist.json",{},true);
+
+    }
+    async onShow(){
+
+    }
+    onHide(){
+
+    }
+    async onLoad() {
+      this.getData();
+    }
+  }
+</script>

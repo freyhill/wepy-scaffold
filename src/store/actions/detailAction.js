@@ -10,7 +10,7 @@ export function setDetailAction(newData) {
  * 业务函数
  */
 export async function getDetailData(store, url, data, loading) { //
-
+try{
     let newData = await http.get(url, data, loading);
 
     store.dispatch(setDetailAction(newData));

@@ -23,16 +23,9 @@ export default class extends wepy.app {
   config = {
     pages: [
 
-      'pages/student',
-      'pages/preexam',
-      'pages/exam',
-      'pages/examdetail',
-      'pages/addexamstudent',
+      'pages/list',
+      'pages/detail',
 
-      'pages/obtainstu',
-      'pages/index',
-      'pages/login',
-      'pages/mycenter',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -47,29 +40,18 @@ export default class extends wepy.app {
       'backgroundColor': '#fff',
       'list': [
         {
-          'iconPath': 'image/tabicon/stu0.png',
-          'selectedIconPath': 'image/tabicon/stu1.png',
-          'pagePath': 'pages/student',
-          'text': '学员'
-        },
-        {
-          'iconPath': 'image/tabicon/exam0.png',
-          'selectedIconPath': 'image/tabicon/exam1.png',
-          'pagePath': 'pages/exam',
-          'text': '考试'
-        },
-        {
           'iconPath': 'image/tabicon/obtstu0.png',
           'selectedIconPath': 'image/tabicon/obtstu1.png',
-          'pagePath': 'pages/obtainstu',
-          'text': '招生'
+          'pagePath': 'pages/list',
+          'text': '首页'
         },
         {
           'iconPath': 'image/tabicon/my0.png',
           'selectedIconPath': 'image/tabicon/my1.png',
-          'pagePath': 'pages/mycenter',
+          'pagePath': 'pages/detail',
           'text': '我的'
         }
+
       ]
     }
   }

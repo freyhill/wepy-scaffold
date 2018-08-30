@@ -11,8 +11,8 @@ export default class http {
     if(loading) {
       wepy.showLoading();
     }
-    let session_key = await auth.getConfig("session_key");
-    data.session_key = session_key;
+    //let session_key = await auth.getConfig("session_key");
+    //data.session_key = session_key;
 
     const param = {
       url: `${config.api}${url}`,

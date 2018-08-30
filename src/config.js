@@ -1,5 +1,4 @@
 let config = {
-  //api: "https://saasapi.qugocar.com/public/",
-  api: "http://qa.goxueche.com/saas_api/public/"
+  api: "http://www.leinov.com/"
 }
 export default config;
